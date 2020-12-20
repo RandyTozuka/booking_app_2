@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+
 #binding.pry
 
   def index
@@ -16,7 +17,7 @@ class BookingsController < ApplicationController
 
   def create
     @user = current_user
-    @booking_date = Date.parse(params[:booking][:date])
+    @booking_date = Time.zone.parse(params[:booking][:date])
     @booking_slot = params[:booking][:slot]
     # binding.pry
     # 予約ができる日は本日以降の未来とする
