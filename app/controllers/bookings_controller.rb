@@ -25,7 +25,6 @@ class BookingsController < ApplicationController
       redirect_to new_booking_path and return
     end
     # 日曜（0）か土曜（6）は予約をさせない。→@booking_dateはstring型なのでdate型に変換し、wdayで曜日を出す
-    # elsif Date.strptime(@booking_date).wday == 0 || Date.strptime(@booking_date).wday == 6
     if @booking_date.wday == 0 || @booking_date.wday == 6
       flash[:danger]= "Dont' be a slave of your job!"
       redirect_to new_booking_path and return
