@@ -54,6 +54,7 @@ class BookingsController < ApplicationController
 
   def update
     @user = current_user
+    @booking = Booking.find(params[:id])
     @booking_date = Time.zone.parse(params[:booking][:date])
     @booking_slot = params[:booking][:slot]
     # 予約ができる日は本日以降の未来とする
@@ -73,7 +74,7 @@ class BookingsController < ApplicationController
       redirect_to root_path and return
     end
     #うまくいったらとそうでなかったら
-    if current_user.bookings.update(booking_params)
+    if @booking.update(booking_params)
       flash[:success]= "Successfully edited"
       redirect_to root_path and return
     else
