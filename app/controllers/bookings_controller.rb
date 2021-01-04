@@ -1,6 +1,22 @@
 class BookingsController < ApplicationController
 
   def index
+    #adminユーザー用
+    if user_signed_in? && current_user.admin?
+      # @today = Date.today.to_datetime
+      @today = Date.today.in_time_zone
+      @admin_bookings = Booking.where('date >= ?', @today)
+      @admin_booking_1 = @admin_bookings.where(date: @today).where(slot:"11:30~11:45").count
+      @admin_booking_2 = @admin_bookings.where(date: @today).where(slot:"11:45~12:00").count
+      @admin_booking_3 = @admin_bookings.where(date: @today).where(slot:"12:00~12:15").count
+      @admin_booking_4 = @admin_bookings.where(date: @today).where(slot:"12:15~12:30").count
+      @admin_booking_5 = @admin_bookings.where(date: @today).where(slot:"12:30~12:45").count
+      @admin_booking_6 = @admin_bookings.where(date: @today).where(slot:"12:45~13:00").count
+      @admin_booking_7 = @admin_bookings.where(date: @today).where(slot:"13:00~13:15").count
+      @admin_booking_8 = @admin_bookings.where(date: @today).where(slot:"13:15~13:30").count
+      @admin_booking = Booking.where('date >= ?', @today).first
+    end
+    #一般ユーザー用
     if current_user && Booking.any?
       # 参考：　https://teratail.com/questions/121843
       @bookings = current_user.bookings.where('date >= ?', Date.today)
