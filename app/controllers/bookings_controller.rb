@@ -3,8 +3,8 @@ class BookingsController < ApplicationController
   def index
     #adminユーザー用
     if user_signed_in? && current_user.admin?
-      # @today = Date.today.to_datetime
       @today = Date.today.in_time_zone
+      @admin_booking = Booking.where('date >= ?', @today).first
       @admin_bookings = Booking.where('date >= ?', @today)
       @admin_booking_1 = @admin_bookings.where(date: @today).where(slot:"11:30~11:45").count
       @admin_booking_2 = @admin_bookings.where(date: @today).where(slot:"11:45~12:00").count
@@ -14,7 +14,6 @@ class BookingsController < ApplicationController
       @admin_booking_6 = @admin_bookings.where(date: @today).where(slot:"12:45~13:00").count
       @admin_booking_7 = @admin_bookings.where(date: @today).where(slot:"13:00~13:15").count
       @admin_booking_8 = @admin_bookings.where(date: @today).where(slot:"13:15~13:30").count
-      @admin_booking = Booking.where('date >= ?', @today).first
     end
     #一般ユーザー用
     if current_user && Booking.any?
