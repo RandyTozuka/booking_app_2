@@ -1,46 +1,19 @@
 <%= link_to 'sign-out', destroy_user_session_path, method: :delete, class: 'btn btn-default' %>
 <h1>This is the admin page</h1>
+<% if @admin_bookings.any? %>
   <div class="admin_bookings">
+    <% @admin_bookings.each do |key, value| %>
     <table class="table table-bordered" align="center">
       <tbody>
         <tr style="color:#ffffff" bgcolor="#337ab7">
-          <th class="col-4">Date</th>
-          <th class="col-4">Slot</th>
-          <th class="col-4">number</th>
-        </tr>
+          <th>Slot</th>
+          <th>number</th>
         <tr>
-          <td rowspan="8"><%= @admin_booking.date.strftime('%Y/%m/%d (%a)') %></td>
-          <td>11:30~11:45</td>
-          <td><%= @admin_booking_1 %></td>
-        </tr>
-        <tr>
-          <td>11:45~12:00</td>
-          <td><%= @admin_booking_2 %></td>
-        </tr>
-        <tr>
-          <td>12:00~12:15</td>
-          <td><%= @admin_booking_3 %></td>
-        </tr>
-        <tr>
-          <td>12:15~12:30</td>
-          <td><%= @admin_booking_4 %></td>
-        </tr>
-        <tr>
-          <td>12:30~12:45</td>
-          <td><%= @admin_booking_5 %></td>
-        </tr>
-        <tr>
-          <td>12:45~13:00</td>
-          <td><%= @admin_booking_6 %></td>
-        </tr>
-        <tr>
-          <td>13:00~13:15</td>
-          <td><%= @admin_booking_7 %></td>
-        </tr>
-        <tr>
-          <td>13:15~13:30</td>
-          <td><%= @admin_booking_8 %></td>
-        </tr>
+        <td><%= key %></td>
+        <td><%= value %></td>
       </tbody>
-    </table>
+    <% end %>
   </div>
+<% else %>
+<h2>No booking today!</h2>
+<% end %>
