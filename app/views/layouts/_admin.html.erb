@@ -1,5 +1,6 @@
 <%= link_to 'sign-out', destroy_user_session_path, method: :delete, class: 'btn btn-default' %>
 <h1>This is the admin page</h1>
+<h3><%= @today.strftime('%-d %b, %Y')  %></h1>
 <% if @admin_bookings.any? %>
   <div class="admin_bookings">
     <% @admin_bookings.each do |key, value| %>
