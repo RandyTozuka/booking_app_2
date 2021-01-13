@@ -10,10 +10,10 @@
           <th>number</th>
         <tr>
         <% @admin_bookings.each do |key, value| %>
-        <td><%= key %></td>
-        <td><%= value %></td>
+          <td><%= Timeframe.find_by(id:key).slot %></td>
+          <td><%= value %></td>
       </tbody>
-    <% end %>
+        <% end %>
   </div>
 <% else %>
 <h2>No booking today!</h2>

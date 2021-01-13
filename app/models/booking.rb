@@ -1,9 +1,10 @@
 class Booking < ApplicationRecord
 
   belongs_to :user
+  belongs_to :timeframe
   validates :user_id, presence: true
   validates :date,    presence: true
-  validates :slot,    presence: true
+  validates :timeframe_id, presence: true
   # validate :slot_limit
   default_scope -> {order(date: :asc)}
 

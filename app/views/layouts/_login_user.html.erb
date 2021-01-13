@@ -10,7 +10,7 @@
       <div class="a-booking">
         <section class="date-slot">
           <%= b.date.strftime('%Y/%m/%d (%a)') %>
-          <%= b.slot %>
+          <%= Timeframe.find(b.timeframe_id).slot %>
         </section>
         <section class="buttons">
           <%= link_to 'Change', edit_booking_path(b), class: 'btn btn-default' %>

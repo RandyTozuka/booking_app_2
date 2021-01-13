@@ -3,9 +3,8 @@ class BookingsController < ApplicationController
   def index
     #adminユーザー用
     if user_signed_in? && current_user.admin?
-      @today = Date.today.in_time_zone
-      @admin_bookings = Booking.where('date = ?', @today).group(:slot).count
-      # binding.pry
+      @today = (Date.today+1).in_time_zone
+      @admin_bookings = Booking.where('date = ?', @today).group(:timeframe_id).count
     end
     #一般ユーザー用
     if current_user && Booking.any?
@@ -24,7 +23,8 @@ class BookingsController < ApplicationController
   def create
     @user = current_user
     @booking_date = Time.zone.parse(params[:booking][:date])
-    @booking_slot = params[:booking][:slot]
+    @booking_slot = params[:booking][:timeframe_id]
+    # binding.pry
     # 予約ができる日は本日以降の未来とする
     if @booking_date <  Date.today
       flash[:danger]= "Head for the future!"
@@ -41,7 +41,7 @@ class BookingsController < ApplicationController
       redirect_to root_path and return
     end
     #同じ日の同じスロットに入る人数の調整…現在はテストとして1人以上予約が入ることを阻止
-    if Booking.where(date:@booking_date).where(slot:@booking_slot).count >= 1
+    if Booking.where(date:@booking_date).where(timeframe_id:@booking_slot).count >= 1
       flash[:danger]= "That slot is fully occupied! Please try other slot."
       redirect_to new_booking_path and return
     end
@@ -63,7 +63,7 @@ class BookingsController < ApplicationController
     @user = current_user
     @booking = Booking.find(params[:id])
     @booking_date = Time.zone.parse(params[:booking][:date])
-    @booking_slot = params[:booking][:slot]
+    @booking_slot = params[:booking][:timeframe_id]
     # 予約ができる日は本日以降の未来とする
     if @booking_date <  Date.today
       flash[:danger]= "Head for the future!"
@@ -76,7 +76,7 @@ class BookingsController < ApplicationController
     end
     #同じ人が同じ日に予約を入れる事を防ぐ機能は入れない→同じ日の違う時間への変更はあり得るため
     #同じ日の同じスロットに入る人数の調整…現在はテストとして1人以上予約が入ることを阻止
-    if Booking.where(date:@booking_date).where(slot:@booking_slot).count >= 1
+    if Booking.where(date:@booking_date).where(timeframe_id:@booking_slot).count >= 1
       flash[:danger]= "That slot is fully occupied! Please try other slot."
       redirect_to root_path and return
     end
@@ -103,7 +103,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:user_id, :date, :slot)
+      params.require(:booking).permit(:user_id, :date, :slot, :timeframe_id)
     end
 
 end# of class
