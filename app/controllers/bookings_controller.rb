@@ -4,7 +4,7 @@ class BookingsController < ApplicationController
     #adminユーザー用
     if user_signed_in? && current_user.admin?
       @today = (Date.today+2).in_time_zone
-      @admin_bookings = Booking.where('date = ?', @today).group(:timeframe_id).order(nil).count
+      @admin_bookings = Booking.unscoped.where('date = ?', @today).group(:timeframe_id).count
     end
     #一般ユーザー用
     if current_user && Booking.any?
