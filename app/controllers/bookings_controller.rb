@@ -3,8 +3,8 @@ class BookingsController < ApplicationController
   def index
     #adminユーザー用
     if user_signed_in? && current_user.admin?
-      @today = (Date.today+1).in_time_zone
-      @admin_bookings = Booking.where('date = ?', @today).group(:timeframe_id).count
+      @today = (Date.today+2).in_time_zone
+      @admin_bookings = Booking.where('date = ?', @today).group(:timeframe_id).order(nil).count
     end
     #一般ユーザー用
     if current_user && Booking.any?
