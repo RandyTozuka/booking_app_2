@@ -18,6 +18,7 @@ class BookingsController < ApplicationController
 
   def new
     @booking = current_user.bookings.new
+    @timeframes = Timeframe.all
   end
 
   def create
