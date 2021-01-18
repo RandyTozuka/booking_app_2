@@ -24,8 +24,8 @@ class BookingsController < ApplicationController
   def create
     @user = current_user
     @booking_date = Time.zone.parse(params[:booking][:date])
-    @booking_slot = params[:booking][:timeframe_id]
-    # binding.pry
+    @booking_slot = params[:booking][:new]
+    binding.pry
     # 予約ができる日は本日以降の未来とする
     if @booking_date <  Date.today
       flash[:danger]= "Head for the future!"
@@ -104,7 +104,9 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:user_id, :date, :slot, :timeframe_id)
+      # params.require(:booking).permit(:user_id, :date, :slot, :timeframe_id)
+      params.require(:booking).permit(:user_id, :date)
+      params.require(:timeframe).permit(:new)
     end
 
 end# of class
