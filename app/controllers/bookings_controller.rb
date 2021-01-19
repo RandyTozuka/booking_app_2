@@ -3,7 +3,7 @@ class BookingsController < ApplicationController
   def index
     #adminユーザー用
     if user_signed_in? && current_user.admin?
-      @today = (Date.today+2).in_time_zone
+      @today = (Date.today).in_time_zone
       @admin_bookings = Booking.unscoped.where('date = ?', @today).group(:timeframe_id).count
     end
     #一般ユーザー用
@@ -24,8 +24,8 @@ class BookingsController < ApplicationController
   def create
     @user = current_user
     @booking_date = Time.zone.parse(params[:booking][:date])
-    @booking_slot = params[:booking][:new]
-    binding.pry
+    @booking_slot = params[:booking][:timeframe_id]
+    # binding.pry
     # 予約ができる日は本日以降の未来とする
     if @booking_date <  Date.today
       flash[:danger]= "Head for the future!"
@@ -58,6 +58,7 @@ class BookingsController < ApplicationController
 
   def edit
     @booking = current_user.bookings.find(params[:id])
+    @timeframes = Timeframe.all
   end
 
   def update
@@ -65,6 +66,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
     @booking_date = Time.zone.parse(params[:booking][:date])
     @booking_slot = params[:booking][:timeframe_id]
+    # binding.pry
     # 予約ができる日は本日以降の未来とする
     if @booking_date <  Date.today
       flash[:danger]= "Head for the future!"
@@ -104,9 +106,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      # params.require(:booking).permit(:user_id, :date, :slot, :timeframe_id)
-      params.require(:booking).permit(:user_id, :date)
-      params.require(:timeframe).permit(:new)
+      params.require(:booking).permit(:user_id, :date, :timeframe_id)
     end
 
 end# of class
