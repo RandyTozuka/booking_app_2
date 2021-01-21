@@ -3,7 +3,7 @@ class BookingsController < ApplicationController
   def index
     #adminユーザー用
     if user_signed_in? && current_user.admin?
-      @today = (Date.today+1).in_time_zone
+      @today = (Date.today).in_time_zone
       @admin_bookings = Booking.unscoped.where('date = ?', @today).group(:timeframe_id).count
     end
     #一般ユーザー用
@@ -41,8 +41,8 @@ class BookingsController < ApplicationController
       flash[:danger]= "Double booking in the the day! Please check."
       redirect_to root_path and return
     end
-    #同じ日の同じスロットに入る人数の調整…現在はテストとして1人以上予約が入ることを阻止
-    if Booking.where(date:@booking_date).where(timeframe_id:@booking_slot).count >= 1
+    #同じ日の同じスロットに入る人数の調整…現在はテストとして10人以上予約が入ることを阻止
+    if Booking.where(date:@booking_date).where(timeframe_id:@booking_slot).count >= 10
       flash[:danger]= "That slot is fully occupied! Please try other slot."
       redirect_to new_booking_path and return
     end
